@@ -31,10 +31,14 @@ namespace kbinxml_sharp
                 dataStart + dataLength), GetEncoding());
         }
 
+        static string[] encodings =
+            { "SHIFT_JIS", "ASCII", "ISO-8859-1",
+              "EUC-JP", "SHIFT_JIS", "UTF-8" };
+
         private string GetEncoding()
         {
             int flag = data[2] >> 5;
-            return Enocding.encdoings[flag];
+            return encodings[flag];
         }
 
         public XmlDocument XmlFromBinary()
