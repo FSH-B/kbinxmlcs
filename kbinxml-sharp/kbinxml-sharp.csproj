@@ -8,7 +8,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>kbinxml_sharp</RootNamespace>
     <AssemblyName>kbinxml-sharp</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -32,9 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,12 +46,8 @@
     <Compile Include="KbinDataBuffer.cs" />
     <Compile Include="KbinNodeBuffer.cs" />
     <Compile Include="KbinReader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sixbit.cs" />
     <Compile Include="Utilities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
