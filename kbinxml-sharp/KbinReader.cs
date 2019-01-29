@@ -5,11 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Net;
+using System.IO;
 
 namespace kbinxml_sharp
 {
     public class KbinReader
     {
+        public KbinReader(string filename) : this(File.ReadAllBytes(filename))
+        {
+
+        }
+
         public KbinReader(byte[] data)
         {
             this.data = data;
