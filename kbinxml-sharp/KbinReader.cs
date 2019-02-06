@@ -40,7 +40,7 @@ namespace kbinxml_sharp
         private string GetEncoding()
         {
             int flag = data[2] >> 5;
-            return Enocding.encdoings[flag];
+            return Encodings.encodings[flag];
         }
 
         public XmlDocument XmlFromBinary()
