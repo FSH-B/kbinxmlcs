@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace kbinxml_sharp
 {
+    internal class Enocding
+    {
+        public static string[] encdoings = 
+            { "SHIFT_JIS", "ASCII", "ISO-8859-1",
+              "EUC-JP", "SHIFT_JIS", "UTF-8" };
+    }
+
     public struct ConstructTypes
     {
         public string name;
