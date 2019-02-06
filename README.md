@@ -19,8 +19,3 @@ public class Program
     }
 }
 ```
-
-## Implementations in other programming languages
-
-[kbinxml](https://github.com/mon/kbinxml) in Python, by [mon](https://github.com/mon)
-[kbinxml-rs](https://github.com/mbilker/kbinxml-rs) in Rust, by [mbilker](https://github.com/mbilker)
