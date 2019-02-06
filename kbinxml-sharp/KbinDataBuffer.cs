@@ -66,7 +66,7 @@ namespace kbinxml_sharp
             }
             else if (bytesRead >= 3)
             {
-                var newNum = bytesRead;
+                int newNum = bytesRead;
                 if (newNum % 4 != 0)
                 {
                     newNum += 4 - (newNum % 4);
@@ -97,33 +97,33 @@ namespace kbinxml_sharp
 
         public byte ReadU8()
         {
-            var result = ReadBytes(1)[0];
+            byte result = ReadBytes(1)[0];
             return result;
         }
 
         public ushort ReadU16()
         {
-            var result = ReadBytes(2);
+            byte[] result = ReadBytes(2);
             return BitConverter.ToUInt16(result, 0);
         }
 
         public uint ReadU32()
         {
-            var result = ReadBytes(4);
+            byte[] result = ReadBytes(4);
             return BitConverter.ToUInt32(result, 0);
         }
 
         public byte[] ReadFrom4Byte(int num)
         {
             if (num == 0) return new byte[0];
-            var read = data.Slice(pos32, pos32 + num);
+            byte[] read = data.Slice(pos32, pos32 + num);
             Realign4Byte(num);
             return read;
         }
 
         public string ReadString(int length)
         {
-            var readBytes = ReadFrom4Byte(length);
+            byte[] readBytes = ReadFrom4Byte(length);
             if (readBytes.Last() == 0x00)
             {
                 Array.Resize(ref readBytes, readBytes.Length - 1);

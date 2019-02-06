@@ -57,8 +57,8 @@ namespace kbinxml_sharp
 
             while (!fileEnd)
             {
-                var current = nodeBuffer.ReadU8();
-                var actual = current & ~(1 << 6);
+                byte current = nodeBuffer.ReadU8();
+                int actual = current & ~(1 << 6);
                 ControlTypes controlTypes;
                 ConstructTypes valueTypes;
 
@@ -73,7 +73,7 @@ namespace kbinxml_sharp
                     switch (controlTypes)
                     {
                         case ControlTypes.NodeStart: 
-                            var name = nodeBuffer.ReadString();
+                            string name = nodeBuffer.ReadString();
 
                             XmlElement newNode = xml.CreateElement(name);
                             if (currentNode != null)
@@ -111,7 +111,7 @@ namespace kbinxml_sharp
                 else if (hasValueType)
                 {
                     string valueName = valueTypes.name;
-                    var isArray = ((current >> 6) & 1) == 1 | valueTypes.size == -1;
+                    bool isArray = ((current >> 6) & 1) == 1 | valueTypes.size == -1;
                     string nodeName = nodeBuffer.ReadString();
                     int arraySize = valueTypes.size;
 
@@ -137,12 +137,6 @@ namespace kbinxml_sharp
                             break;
                         case "str":
                             newNode.InnerText = dataBuffer.ReadString(arraySize);
-                            break;
-                        case "ip4":
-                            byte[] addressBytes = dataBuffer.ReadBytes(valueTypes.size);
-                            Array.Reverse(addressBytes);
-                            IPAddress address = new IPAddress(addressBytes);
-                            newNode.InnerText = address.ToString();
                             break;
                         default:
                             if (isArray)
@@ -178,7 +172,16 @@ namespace kbinxml_sharp
                                             stringList.Add(BitConverter.ToUInt64(arrayBytes, 0).ToString());
                                             break;
                                         case 4:
-                                            stringList.Add(BitConverter.ToUInt32(arrayBytes, 0).ToString());
+                                            if (valueTypes.name == "ip4")
+                                            {
+                                                Array.Reverse(arrayBytes);
+                                                IPAddress address = new IPAddress(arrayBytes);
+                                                stringList.Add(address.ToString());
+                                            }
+                                            else
+                                            {
+                                                stringList.Add(BitConverter.ToUInt32(arrayBytes, 0).ToString());
+                                            }
                                             break;
                                         case 2:
                                             stringList.Add(BitConverter.ToUInt16(arrayBytes, 0).ToString());
