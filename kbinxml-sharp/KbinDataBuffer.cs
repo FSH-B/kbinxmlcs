@@ -56,7 +56,7 @@ namespace kbinxml_sharp
                 }
                 pos8++;
             }
-            if (bytesRead == 2)
+            else if (bytesRead == 2)
             {
                 if (pos16 % 4 == 0)
                 {
@@ -64,7 +64,7 @@ namespace kbinxml_sharp
                 }
                 pos16 += 2;
             }
-            if (bytesRead >= 3)
+            else if (bytesRead >= 3)
             {
                 var newNum = bytesRead;
                 if (newNum % 4 != 0)
