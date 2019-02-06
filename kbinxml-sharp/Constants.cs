@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace kbinxml_sharp
 {
-    internal class Enocding
+    internal class Encodings
     {
-        public static string[] encdoings = 
+        public static string[] encodings = 
             { "SHIFT_JIS", "ASCII", "ISO-8859-1",
               "EUC-JP", "SHIFT_JIS", "UTF-8" };
     }

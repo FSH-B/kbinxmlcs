@@ -5,11 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Net;
+using System.IO;
 
 namespace kbinxml_sharp
 {
     public class KbinReader
     {
+        public KbinReader(string filename) : this(File.ReadAllBytes(filename))
+        {
+
+        }
+
         public KbinReader(byte[] data)
         {
             this.data = data;
@@ -34,7 +40,7 @@ namespace kbinxml_sharp
         private string GetEncoding()
         {
             int flag = data[2] >> 5;
-            return Enocding.encdoings[flag];
+            return Encodings.encodings[flag];
         }
 
         public XmlDocument XmlFromBinary()

@@ -23,26 +23,23 @@ namespace kbinxml_sharp
         {
             byte[] result;
 
-            if (num == 0)
-            {
-                return new byte[0];
-            }
             if (num == 1)
             {
                 result = BitConverter.GetBytes(data[pos8]);
             }
-            if (num == 2)
+            else if (num == 2)
             {
                 result = data.Slice(pos16, pos16 + 2);
             }
-            if (num >= 3)
+            else if (num >= 3)
             {
                 result = data.Slice(pos32, pos32 + num);
             }
             else
             {
-                result = new byte[0];
+                return new byte[0];
             }
+
             Realign(num);
 
             Array.Reverse(result);
@@ -59,7 +56,7 @@ namespace kbinxml_sharp
                 }
                 pos8++;
             }
-            if (bytesRead == 2)
+            else if (bytesRead == 2)
             {
                 if (pos16 % 4 == 0)
                 {
@@ -67,7 +64,7 @@ namespace kbinxml_sharp
                 }
                 pos16 += 2;
             }
-            if (bytesRead >= 3)
+            else if (bytesRead >= 3)
             {
                 var newNum = bytesRead;
                 if (newNum % 4 != 0)
