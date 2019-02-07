@@ -21,11 +21,11 @@ namespace kbinxml_sharp
 
         public byte[] ReadBytes(int num)
         {
-            byte[] result;
+            byte[] result = new byte[0];
 
             if (num == 1)
             {
-                result = BitConverter.GetBytes(data[pos8]);
+                result = new byte[] { data[pos8] };
             }
             else if (num == 2)
             {
@@ -35,9 +35,9 @@ namespace kbinxml_sharp
             {
                 result = data.Slice(pos32, pos32 + num);
             }
-            else
+            else if (num == 0)
             {
-                return new byte[0];
+                return result;
             }
 
             Realign(num);
