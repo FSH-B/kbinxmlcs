@@ -19,7 +19,6 @@ namespace kbinxml_sharp
         public KbinReader(byte[] data)
         {
             this.data = data;
-            GetHeader();
         }
 
         private void GetHeader() 
@@ -45,6 +44,7 @@ namespace kbinxml_sharp
 
         public XmlDocument XmlFromBinary()
         {
+            GetHeader();
             nodeBuffer.Reset(); dataBuffer.Reset();
             XmlDocument xml = new XmlDocument();
             XmlNode currentNode = null;
