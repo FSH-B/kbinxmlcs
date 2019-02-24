@@ -8,32 +8,32 @@ namespace kbinxml_sharp
 {
     internal class KbinNodeBuffer
     {
-        public KbinNodeBuffer(byte[] data, bool compressed, string encoding)
+        internal KbinNodeBuffer(byte[] data, bool compressed, string encoding)
         {
             this.data = data;
             this.compressed = compressed;
             this.encoding = encoding;
         }
 
-        public void Reset()
+        internal void Reset()
         {
             index = 0;
         }
 
-        public byte[] ReadBytes(int num)
+        internal byte[] ReadBytes(int num)
         {
             byte[] result = data.Slice(index, index + num);
             index += num;
             return result;
         }
 
-        public byte ReadU8()
+        internal byte ReadU8()
         {
             byte result = ReadBytes(1)[0];
             return result;
         }
 
-        public string ReadString()
+        internal string ReadString()
         {
             int length = ReadU8();
             if (compressed)

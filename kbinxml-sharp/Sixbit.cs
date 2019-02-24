@@ -8,7 +8,7 @@ namespace kbinxml_sharp
 {
     internal static class Sixbit
     {
-        static string Map(this int[] charBytes)
+        private static string Map(this int[] charBytes)
         {
             string[] result = new string[charBytes.Length];
             for (int i = 0; i < charBytes.Length; i++)
@@ -18,7 +18,7 @@ namespace kbinxml_sharp
             return string.Join("", result);
         }
 
-        public static string Unpack(this byte[] input, int length)
+        internal static string Unpack(this byte[] input, int length)
         {
             int[] charBytes = new int[length];
             for (int i = 0; i < length * 6; i++)

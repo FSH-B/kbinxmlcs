@@ -13,13 +13,13 @@ namespace kbinxml_sharp
               "EUC-JP", "SHIFT_JIS", "UTF-8" };
     }
 
-    public struct ConstructTypes
+    internal struct ConstructTypes
     {
-        public string name;
+        public string name, type;
         public int count, size;
     }
 
-    public enum ControlTypes
+    internal enum ControlTypes
     {
         NodeStart,
         Attribute,
@@ -27,9 +27,9 @@ namespace kbinxml_sharp
         FileEnd        
     }
 
-    public class Types
+    internal class Types
     {
-        public static Dictionary<int, ControlTypes> ControlTypeMap =
+        internal static Dictionary<int, ControlTypes> ControlTypeMap =
             new Dictionary<int, ControlTypes>()
         {
             { 1, ControlTypes.NodeStart  },
@@ -38,23 +38,23 @@ namespace kbinxml_sharp
             { 191, ControlTypes.FileEnd  }
         };
 
-        public static Dictionary<int, ConstructTypes> ConstructTypeMap =
+        internal static Dictionary<int, ConstructTypes> ConstructTypeMap =
             new Dictionary<int, ConstructTypes>()
         {
-            { 2, new ConstructTypes { name="s8", size=1, count=1 }   },
-            { 3, new ConstructTypes { name="u8", size=1, count=1 }   },
-            { 4, new ConstructTypes { name="s16", size=2, count=1}   },
-            { 5, new ConstructTypes { name="u16", size=2, count=1}   },
-            { 6, new ConstructTypes { name="s32", size=4, count=1}   },
-            { 7, new ConstructTypes { name="u32", size=4, count=1}   },
-            { 8, new ConstructTypes { name="s64", size=8, count=1}   },
-            { 9, new ConstructTypes { name="u64", size=8, count=1}   },
-            { 10, new ConstructTypes { name="bin", size=-1, count=1}  },
-            { 11, new ConstructTypes { name="str", size=-1, count=1}  },
-            { 12, new ConstructTypes { name="ip4", size=4, count=1}  }, 
-            { 13, new ConstructTypes { name="time", size=4, count=1} },
-            { 37, new ConstructTypes { name="4u8", size=1, count=4}  },
-            { 52, new ConstructTypes { name="bool", size=1, count=1} },
+            { 2, new ConstructTypes { name="s8", size=1, count=1, type="s8"     } },
+            { 3, new ConstructTypes { name="u8", size=1, count=1, type="u8"     } },
+            { 4, new ConstructTypes { name="s16", size=2, count=1, type="s16"   } },
+            { 5, new ConstructTypes { name="u16", size=2, count=1, type="u16"   } },
+            { 6, new ConstructTypes { name="s32", size=4, count=1, type="s32"   } },
+            { 7, new ConstructTypes { name="u32", size=4, count=1, type="u32"   } },
+            { 8, new ConstructTypes { name="s64", size=8, count=1, type="s64"   } },
+            { 9, new ConstructTypes { name="u64", size=8, count=1, type="u64"   } },
+            { 10, new ConstructTypes { name="bin", size=-1, count=1, type=""    } },
+            { 11, new ConstructTypes { name="str", size=-1, count=1, type=""    } },
+            { 12, new ConstructTypes { name="ip4", size=4, count=1, type="ip4"  } }, 
+            { 13, new ConstructTypes { name="time", size=4, count=1, type="u32" } },
+            { 37, new ConstructTypes { name="4u8", size=1, count=4, type="u8"   } },
+            { 52, new ConstructTypes { name="bool", size=1, count=1, type="s8"  } },
         };
     }
 }

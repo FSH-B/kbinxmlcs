@@ -26,14 +26,12 @@ namespace kbinxml_sharp
             int nodeLength = data.Slice(4, 8).ToInt32();
             bool compressed = data[1] == 0x42;
 
-            nodeBuffer = new KbinNodeBuffer(data.Slice(8, 8 + nodeLength), 
-                compressed, GetEncoding());
+            nodeBuffer = new KbinNodeBuffer(data.Slice(8, 8 + nodeLength), compressed, GetEncoding());
 
             int dataStart = nodeLength + 12;
             int dataLength = data.Slice(dataStart - 4, dataStart).ToInt32();
 
-            dataBuffer = new KbinDataBuffer(data.Slice(dataStart, 
-                dataStart + dataLength), GetEncoding());
+            dataBuffer = new KbinDataBuffer(data.Slice(dataStart, dataStart + dataLength), GetEncoding());
         }
 
         private string GetEncoding()
@@ -162,39 +160,9 @@ namespace kbinxml_sharp
 
                             for (int i = 0; i < numElements; i++)
                             {
-                                if (byteList.Count() != 0)
-                                {
-                                    byte[] arrayBytes = byteList.Slice(i * valueTypes.size, (i + 1) * valueTypes.size);
-
-                                    switch (valueTypes.size)
-                                    {
-                                        case 8:
-                                            stringList.Add(BitConverter.ToUInt64(arrayBytes, 0).ToString());
-                                            break;
-                                        case 4:
-                                            if (valueTypes.name == "ip4")
-                                            {
-                                                Array.Reverse(arrayBytes);
-                                                IPAddress address = new IPAddress(arrayBytes);
-                                                stringList.Add(address.ToString());
-                                            }
-                                            else
-                                            {
-                                                stringList.Add(BitConverter.ToUInt32(arrayBytes, 0).ToString());
-                                            }
-                                            break;
-                                        case 2:
-                                            stringList.Add(BitConverter.ToUInt16(arrayBytes, 0).ToString());
-                                            break;
-                                        default:
-                                            stringList.Add(arrayBytes[0].ToString());
-                                            break;
-                                    }
-                                }
-                                else
-                                {
-                                    stringList.Add(0.ToString());
-                                }
+                                byte[] arrayBytes = byteList.Slice(i * valueTypes.size, (i + 1) * valueTypes.size);
+                                ByteConv byteConv = new ByteConv(valueTypes);
+                                stringList.Add(byteConv.ConvertBytes(arrayBytes));
                             }
                             newNode.InnerText = string.Join(" ", stringList.ToArray().Reverse());
                             break;

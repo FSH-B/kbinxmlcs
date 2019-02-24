@@ -8,7 +8,7 @@ namespace kbinxml_sharp
 {
     internal static class Utilities
     {
-        public static byte[] Slice(this byte[] array,
+        internal static byte[] Slice(this byte[] array,
             int startIndex, int range)
         {
             int length = range - startIndex;
@@ -18,7 +18,7 @@ namespace kbinxml_sharp
             return output;
         }
 
-        public static int ToInt32(this byte[] array)
+        internal static int ToInt32(this byte[] array)
         {
             Array.Reverse(array); 
             int output = BitConverter.ToInt32(array, 0);

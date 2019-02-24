@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByteConv.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="KbinDataBuffer.cs" />
     <Compile Include="KbinNodeBuffer.cs" />

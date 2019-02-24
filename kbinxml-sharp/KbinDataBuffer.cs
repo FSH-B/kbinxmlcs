@@ -8,18 +8,18 @@ namespace kbinxml_sharp
 {
     internal class KbinDataBuffer
     {
-        public KbinDataBuffer(byte[] data, string encoding)
+        internal KbinDataBuffer(byte[] data, string encoding)
         {
             this.data = data;
             this.encoding = encoding;
         }
 
-        public void Reset()
+        internal void Reset()
         {
             pos8 = 0; pos16 = 0; pos32 = 0;
         }
 
-        public byte[] ReadBytes(int num)
+        internal byte[] ReadBytes(int num)
         {
             byte[] result = new byte[0];
 
@@ -46,7 +46,7 @@ namespace kbinxml_sharp
             return result;
         }
 
-        void Realign(int bytesRead)
+        private void Realign(int bytesRead)
         {
             if (bytesRead == 1)
             {
@@ -83,7 +83,7 @@ namespace kbinxml_sharp
             }
         }
 
-        void Realign4Byte(int num)
+        private void Realign4Byte(int num)
         {
             if (num % 4 != 0)
             {
@@ -95,25 +95,25 @@ namespace kbinxml_sharp
             }
         }
 
-        public byte ReadU8()
+        internal byte ReadU8()
         {
             byte result = ReadBytes(1)[0];
             return result;
         }
 
-        public ushort ReadU16()
+        internal ushort ReadU16()
         {
             byte[] result = ReadBytes(2);
             return BitConverter.ToUInt16(result, 0);
         }
 
-        public uint ReadU32()
+        internal uint ReadU32()
         {
             byte[] result = ReadBytes(4);
             return BitConverter.ToUInt32(result, 0);
         }
 
-        public byte[] ReadFrom4Byte(int num)
+        internal byte[] ReadFrom4Byte(int num)
         {
             if (num == 0) return new byte[0];
             byte[] read = data.Slice(pos32, pos32 + num);
@@ -121,7 +121,7 @@ namespace kbinxml_sharp
             return read;
         }
 
-        public string ReadString(int length)
+        internal string ReadString(int length)
         {
             byte[] readBytes = ReadFrom4Byte(length);
             if (readBytes.Last() == 0x00)
