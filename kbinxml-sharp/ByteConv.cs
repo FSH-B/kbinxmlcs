@@ -37,6 +37,10 @@ namespace kbinxml_sharp
                         return ConvertU64(data);
                     case "ip4":
                         return ConvertIP4(data);
+                    case "f32":
+                        return ConvertFloat(data);
+                    case "f64":
+                        return ConvertDouble(data);
                     default:
                         return string.Empty;
                 }
@@ -92,6 +96,17 @@ namespace kbinxml_sharp
             Array.Reverse(data);
             return new IPAddress(data).ToString();
         }
+
+        private string ConvertFloat(byte[] data)
+        {
+            return BitConverter.ToSingle(data, 0).ToString("F6");
+        }
+
+        private string ConvertDouble(byte[] data)
+        {
+            return BitConverter.ToDouble(data, 0).ToString("F6");
+        }
+
 
         private ConstructTypes constructTypes;
     }
