@@ -19,19 +19,21 @@ namespace kbinxml_sharp
         public KbinReader(byte[] data)
         {
             this.data = data;
+            GetHeader();
         }
 
         private void GetHeader() 
         {
             int nodeLength = data.Slice(4, 8).ToInt32();
             bool compressed = data[1] == 0x42;
+            Encoding = GetEncoding();
 
-            nodeBuffer = new KbinNodeBuffer(data.Slice(8, 8 + nodeLength), compressed, GetEncoding());
+            nodeBuffer = new KbinNodeBuffer(data.Slice(8, 8 + nodeLength), compressed, Encoding);
 
             int dataStart = nodeLength + 12;
             int dataLength = data.Slice(dataStart - 4, dataStart).ToInt32();
 
-            dataBuffer = new KbinDataBuffer(data.Slice(dataStart, dataStart + dataLength), GetEncoding());
+            dataBuffer = new KbinDataBuffer(data.Slice(dataStart, dataStart + dataLength), Encoding);
         }
 
         private string GetEncoding()
@@ -42,14 +44,12 @@ namespace kbinxml_sharp
 
         public XmlDocument XmlFromBinary()
         {
-            GetHeader();
             nodeBuffer.Reset(); dataBuffer.Reset();
             XmlDocument xml = new XmlDocument();
             XmlNode currentNode = null;
             bool fileEnd = false;
 
-            XmlDeclaration declaration = xml.CreateXmlDeclaration
-                ("1.0", GetEncoding(), null);
+            XmlDeclaration declaration = xml.CreateXmlDeclaration ("1.0", Encoding, null);
 
             xml.InsertBefore(declaration, xml.DocumentElement);
 
@@ -173,6 +173,19 @@ namespace kbinxml_sharp
             return new XmlDocument();
         }
 
+        public string Encoding
+        {
+            get
+            {
+                return encoding;
+            }
+            private set
+            {
+                encoding = value;
+            }
+        }
+
+        private string encoding;
         private byte[] data;
         private KbinNodeBuffer nodeBuffer;
         private KbinDataBuffer dataBuffer;
