@@ -15,7 +15,7 @@ public class Program
     {
         byte[] data = File.ReadAllBytes("test.bin");
         XmlReader XmlReader = new XmlReader(data);
-        Console.WriteLine(kbinReader.XmlFromBinary().OuterXml);
+        Console.WriteLine(XmlReader.Read().OuterXml);
     }
 }
 ```
