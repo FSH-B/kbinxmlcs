@@ -1,4 +1,4 @@
-## kbinxml-sharp
+## kbinxmlcs
 
 A tool for decoding Konami's binary XML format.
 
