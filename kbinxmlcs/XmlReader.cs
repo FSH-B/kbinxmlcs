@@ -42,7 +42,7 @@ namespace kbinxmlcs
 
             _xmlDocument.InsertBefore(_xmlDocument.CreateXmlDeclaration("1.0", encoding.WebName, null), _xmlDocument.DocumentElement);
         }
-
+        
         public XmlDocument Read()
         {
             while (true)
@@ -123,7 +123,7 @@ namespace kbinxmlcs
                 }
                 else
                 {
-                    throw new KbinException($"Unknown property type: {nodeType}");
+                    throw new KbinException($"Unknown node type: {nodeType}");
                 }
             }
         }
