@@ -7,14 +7,14 @@ A tool for decoding Konami's binary XML format.
 ```cs
 using System;
 using System.IO;
-using kbinxml_sharp;
+using kbinxmlcs;
 
 public class Program
 {
     static void Main(string[] args)
     {
         byte[] data = File.ReadAllBytes("test.bin");
-        KbinReader kbinReader = new KbinReader(data);
+        XmlReader XmlReader = new XmlReader(data);
         Console.WriteLine(kbinReader.XmlFromBinary().OuterXml);
     }
 }
