@@ -5,6 +5,9 @@ using System.Xml;
 
 namespace kbinxmlcs
 {
+    /// <summary>
+    /// Represents a reader for Konami's binary XML format.
+    /// </summary>
     public class XmlReader
     {
         private NodeBuffer _nodeBuffer;
@@ -13,6 +16,10 @@ namespace kbinxmlcs
         private XmlDocument _xmlDocument = new XmlDocument();
         private XmlElement _currentElement;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlReader"/> class.
+        /// </summary>
+        /// <param name="buffer">An array of bytes containing the contents of a binary XML.</param>
         public XmlReader(byte[] buffer)
         {
             //Read header section.
@@ -43,6 +50,10 @@ namespace kbinxmlcs
             _xmlDocument.InsertBefore(_xmlDocument.CreateXmlDeclaration("1.0", encoding.WebName, null), _xmlDocument.DocumentElement);
         }
         
+        /// <summary>
+        /// Reads all nodes in the binary XML.
+        /// </summary>
+        /// <returns>Returns the XML document.</returns>
         public XmlDocument Read()
         {
             while (true)

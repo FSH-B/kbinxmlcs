@@ -3,6 +3,9 @@ using System.Xml;
 
 namespace kbinxmlcs
 {
+    /// <summary>
+    /// Represents a writer for konami's binary XML format.
+    /// </summary>
     public class XmlWriter
     {
         private XmlDocument _xmlDocument;
@@ -11,6 +14,11 @@ namespace kbinxmlcs
         private NodeBuffer _nodeBuffer;
         private DataBuffer _dataBuffer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlWriter"/> class.
+        /// </summary>
+        /// <param name="xmlDocument">The XML document to be wirtten as a binary XML.</param>
+        /// <param name="encoding">The encoding of the XML document.</param>
         public XmlWriter(XmlDocument xmlDocument, Encoding encoding)
         {
             _xmlDocument = xmlDocument;
@@ -20,6 +28,10 @@ namespace kbinxmlcs
             _dataBuffer = new DataBuffer(encoding);
         }
 
+        /// <summary>
+        /// Writes all nodes in the XML document.
+        /// </summary>
+        /// <returns>Retruns an array of bytes containing the contents of the binary XML.</returns>
         public byte[] Write()
         {
             Recurse(_xmlDocument.DocumentElement);
