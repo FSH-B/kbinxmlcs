@@ -13,7 +13,7 @@ namespace kbinxmlcs
 
         internal DataBuffer(byte[] buffer, Encoding encoding)
         {
-            _buffer = buffer.ToList();
+            Buffer = buffer.ToList();
             _encoding = encoding;
         }
 
@@ -31,9 +31,9 @@ namespace kbinxmlcs
                 _pos16 = _pos32;
         }
 
-        internal byte[] Read32bitAligned(int count)
+        internal byte[] Read32BitAligned(int count)
         {
-            byte[] result = _buffer.Skip(_pos32).Take(count).ToArray();
+            byte[] result = Buffer.Skip(_pos32).Take(count).ToArray();
             while (count % 4 != 0)
                 count++;
             _pos32 += count;
@@ -43,34 +43,34 @@ namespace kbinxmlcs
             return result;
         }
 
-        internal byte[] Read16bitAligned()
+        internal byte[] Read16BitAligned()
         {
             if (_pos16 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = _buffer.Skip(_pos16).Take(2).ToArray();
+            byte[] result = Buffer.Skip(_pos16).Take(2).ToArray();
             _pos16 += 2;
             Realign16_8();
 
             return result;
         }
 
-        internal byte[] Read8bitAligned()
+        internal byte[] Read8BitAligned()
         {
             if (_pos8 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = _buffer.Skip(_pos8).Take(1).ToArray();
+            byte[] result = Buffer.Skip(_pos8).Take(1).ToArray();
             _pos8++;
             Realign16_8();
 
             return result;
         }
 
-        public void Write32bitAligned(byte[] buffer)
+        public void Write32BitAligned(byte[] buffer)
         {
-            while (_pos32 > _buffer.Count())
-                _buffer.Add(0);
+            while (_pos32 > Buffer.Count())
+                Buffer.Add(0);
 
             SetRange(buffer, ref _pos32);
             while (_pos32 % 4 != 0)
@@ -79,10 +79,10 @@ namespace kbinxmlcs
             Realign16_8();
         }
 
-        internal void Write16bitAligned(byte[] buffer)
+        internal void Write16BitAligned(byte[] buffer)
         {
-            while (_pos16 > _buffer.Count())
-                _buffer.Add(0);
+            while (_pos16 > Buffer.Count())
+                Buffer.Add(0);
 
             if (_pos16 % 4 == 0)
                 _pos32 += 4;
@@ -91,10 +91,10 @@ namespace kbinxmlcs
             Realign16_8();
         }
 
-        internal void Write8bitAligned(byte value)
+        internal void Write8BitAligned(byte value)
         {
-            while (_pos8 > _buffer.Count())
-                _buffer.Add(0);
+            while (_pos8 > Buffer.Count())
+                Buffer.Add(0);
 
             if (_pos8 % 4 == 0)
                 _pos32 += 4;
@@ -108,13 +108,13 @@ namespace kbinxmlcs
             switch (count)
             {
                 case 1:
-                    return Read8bitAligned();
+                    return Read8BitAligned();
 
                 case 2:
-                    return Read16bitAligned();
+                    return Read16BitAligned();
 
                 default:
-                    return Read32bitAligned(count);
+                    return Read32BitAligned(count);
             }
         }
 
@@ -123,15 +123,15 @@ namespace kbinxmlcs
             switch (buffer.Length)
             {
                 case 1:
-                    Write8bitAligned(buffer[0]);
+                    Write8BitAligned(buffer[0]);
                     break;
 
                 case 2:
-                    Write16bitAligned(buffer);
+                    Write16BitAligned(buffer);
                     break;
 
                 default:
-                    Write32bitAligned(buffer);
+                    Write32BitAligned(buffer);
                     break;
             }
         }
@@ -141,10 +141,10 @@ namespace kbinxmlcs
             List<byte> buffer = new List<byte>(_encoding.GetBytes(value));
             buffer.Add(0);
             WriteU32((uint)buffer.Count);
-            Write32bitAligned(buffer.ToArray());
+            Write32BitAligned(buffer.ToArray());
         }
 
-        internal string ReadString(int count) => _encoding.GetString(Read32bitAligned(count)).TrimEnd('\0');
+        internal string ReadString(int count) => _encoding.GetString(Read32BitAligned(count)).TrimEnd('\0');
 
        private static byte[] ConvertHexString(string hexString) => Enumerable.Range(0, hexString.Length).Where(x => x % 2 == 0)
             .Select(x => byte.Parse(hexString.Substring(x, 2), NumberStyles.HexNumber)).ToArray();
@@ -152,23 +152,23 @@ namespace kbinxmlcs
         internal void WriteBinary(string value)
         {
             WriteU32((uint)value.Length / 2);
-            Write32bitAligned(ConvertHexString(value));
+            Write32BitAligned(ConvertHexString(value));
         }
 
-        internal string ReadBinary(int count) => BitConverter.ToString(Read32bitAligned(count)).Replace("-", "").ToLower();
+        internal string ReadBinary(int count) => BitConverter.ToString(Read32BitAligned(count)).Replace("-", "").ToLower();
 
         private void SetRange(byte[] buffer, ref int offset)
         {
-            if (offset == _buffer.Count())
+            if (offset == Buffer.Count())
             {
-                _buffer.InsertRange(offset, buffer);
+                Buffer.InsertRange(offset, buffer);
                 offset += buffer.Length;
             }
             else
             {
                 for (int i = 0; i < buffer.Length; i++)
                 {
-                    _buffer[offset] = buffer[i];
+                    Buffer[offset] = buffer[i];
                     offset++;
                 }
             }

@@ -6,25 +6,25 @@ namespace kbinxmlcs
 {
     internal class BigEndianBinaryBuffer
     {
-        protected List<byte> _buffer;
-        protected int _offset;
+        protected List<byte> Buffer;
+        protected int Offset;
 
-        internal BigEndianBinaryBuffer(byte[] buffer) => _buffer = new List<byte>(buffer);
+        internal BigEndianBinaryBuffer(byte[] buffer) => Buffer = new List<byte>(buffer);
 
-        internal BigEndianBinaryBuffer() => _buffer = new List<byte>();
+        internal BigEndianBinaryBuffer() => Buffer = new List<byte>();
 
         internal virtual byte[] ReadBytes(int count)
         {
-            byte[] buffer = _buffer.Skip(_offset).Take(count).ToArray();
-            _offset += count;
+            byte[] buffer = Buffer.Skip(Offset).Take(count).ToArray();
+            Offset += count;
 
             return buffer;
         }
 
         internal virtual void WriteBytes(byte[] buffer)
         {
-            _buffer.InsertRange(_offset, buffer);
-            _offset += buffer.Length;
+            Buffer.InsertRange(Offset, buffer);
+            Offset += buffer.Length;
         }
 
         internal virtual void WriteS8(sbyte value) => WriteBytes(new byte[] { (byte)value });
@@ -61,14 +61,14 @@ namespace kbinxmlcs
 
         internal void Pad()
         {
-            while (_buffer.Count % 4 != 0)
-                _buffer.Add(0);
+            while (Buffer.Count % 4 != 0)
+                Buffer.Add(0);
         }
 
-        internal byte[] ToArray() => _buffer.ToArray();
+        internal byte[] ToArray() => Buffer.ToArray();
 
-        internal int Length => _buffer.Count();
+        internal int Length => Buffer.Count();
 
-        internal byte this[int index] => _buffer[index];
+        internal byte this[int index] => Buffer[index];
     }
 }
