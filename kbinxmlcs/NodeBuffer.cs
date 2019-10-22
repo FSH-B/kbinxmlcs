@@ -9,7 +9,6 @@ namespace kbinxmlcs
         private bool _compressed;
 
         internal NodeBuffer(bool compressed, Encoding encoding)
-            : base()
         {
             _compressed = compressed;
             _encoding = encoding;
@@ -42,8 +41,8 @@ namespace kbinxmlcs
 
             if (_compressed)
                 return Sixbit.Decode(ReadBytes((int)Math.Ceiling(length * 6 / 8.0)), length);
-            else
-                return _encoding.GetString(ReadBytes((length & 0b10111111) + 1));
+            
+            return _encoding.GetString(ReadBytes((length & 0b10111111) + 1));
         }
     }
 }
