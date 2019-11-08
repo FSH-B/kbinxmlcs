@@ -1,18 +1,19 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 
 namespace kbinxmlcs
 {
     /// <summary>
-    /// Represents a writer for konami's binary XML format.
+    /// Represents a writer for Konami's binary XML format.
     /// </summary>
     public class XmlWriter
     {
-        private XmlDocument _xmlDocument;
-        private Encoding _encoding;
+        private readonly XmlDocument _xmlDocument;
+        private readonly Encoding _encoding;
 
-        private NodeBuffer _nodeBuffer;
-        private DataBuffer _dataBuffer;
+        private readonly NodeBuffer _nodeBuffer;
+        private readonly DataBuffer _dataBuffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriter"/> class.
@@ -92,14 +93,20 @@ namespace kbinxmlcs
                         _dataBuffer.WriteU32(size);
                     }
 
+                    var values = new List<byte>();
+                    
                     for (var i = 0; i < size / type.Size; i++)
-                        _dataBuffer.WriteBytes(type.GetBytes(value[i]));
+                        values.AddRange(type.ToBytes(value[i]));
+                    
+                    _dataBuffer.WriteBytes(values.ToArray());
                 }
             }
 
             foreach (XmlAttribute attribute in xmlElement.Attributes)
             {
-                if (attribute.Name != "str" || attribute.Name != "bin")
+                if (attribute.Name != "__type" &&
+                    attribute.Name != "__size" &&
+                    attribute.Name != "__count")
                 {
                     _nodeBuffer.WriteU8(0x2E);
                     _nodeBuffer.WriteString(attribute.Name);
