@@ -10,10 +10,10 @@ namespace kbinxmlcs
     /// </summary>
     public class XmlReader
     {
-        private NodeBuffer _nodeBuffer;
-        private DataBuffer _dataBuffer;
+        private readonly NodeBuffer _nodeBuffer;
+        private readonly DataBuffer _dataBuffer;
 
-        private XmlDocument _xmlDocument = new XmlDocument();
+        private readonly XmlDocument _xmlDocument = new XmlDocument();
         private XmlElement _currentElement;
 
         /// <summary>
@@ -102,16 +102,16 @@ namespace kbinxmlcs
                     _currentElement = (XmlElement)_currentElement.AppendChild(_xmlDocument.CreateElement(elementName));
 
                     var attribute = _xmlDocument.CreateAttribute("__type");
-                    attribute.Value = propertyType.Alias;
+                    attribute.Value = propertyType.Name;
                     _currentElement.Attributes.Append(attribute);
 
                     var arraySize = propertyType.Size * propertyType.Count;
-                    if (array || propertyType.Alias == "str" || propertyType.Alias == "bin")
+                    if (array || propertyType.Name == "str" || propertyType.Name == "bin")
                         arraySize = _dataBuffer.ReadS32(); //Total size.
 
-                    if (propertyType.Alias == "str")
+                    if (propertyType.Name == "str")
                         _currentElement.InnerText = _dataBuffer.ReadString(arraySize);
-                    else if (propertyType.Alias == "bin")
+                    else if (propertyType.Name == "bin")
                     {
                         _currentElement.InnerText = _dataBuffer.ReadBinary(arraySize);
                         _currentElement.SetAttribute("__size", arraySize.ToString());
@@ -130,6 +130,7 @@ namespace kbinxmlcs
                             result.Add(propertyType.ToString(buffer.Skip(i * propertyType.Size)
                                 .Take(propertyType.Size).ToArray()));
                         _currentElement.InnerText = string.Join(' ', result);
+                        
                     }
                 }
                 else
