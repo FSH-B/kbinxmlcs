@@ -138,7 +138,7 @@ namespace kbinxmlcs
 
         internal void WriteString(string value)
         {
-            List<byte> buffer = new List<byte>(_encoding.GetBytes(value));
+            var buffer = new List<byte>(_encoding.GetBytes(value));
             buffer.Add(0);
             WriteU32((uint)buffer.Count);
             Write32BitAligned(buffer.ToArray());

@@ -5,8 +5,8 @@ namespace kbinxmlcs
 {
     internal class NodeBuffer : BigEndianBinaryBuffer
     {
-        private Encoding _encoding;
-        private bool _compressed;
+        private readonly Encoding _encoding;
+        private readonly bool _compressed;
 
         internal NodeBuffer(bool compressed, Encoding encoding)
         {
