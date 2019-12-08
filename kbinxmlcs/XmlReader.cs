@@ -44,7 +44,7 @@ namespace kbinxmlcs
             var nodeLength = binaryBuffer.ReadS32();
             _nodeBuffer = new NodeBuffer(buffer.Skip(8).Take(nodeLength).ToArray(), compressed, encoding);
 
-            var dataLength = BitConverter.ToInt32(buffer.Skip(nodeLength + 8).Take(4).Reverse().ToArray());
+            var dataLength = BitConverter.ToInt32(buffer.Skip(nodeLength + 8).Take(4).Reverse().ToArray(), 0);
             _dataBuffer = new DataBuffer(buffer.Skip(nodeLength + 12).Take(dataLength).ToArray(), encoding);
 
             _xmlDocument.InsertBefore(_xmlDocument.CreateXmlDeclaration("1.0", encoding.WebName, null), _xmlDocument.DocumentElement);
@@ -63,6 +63,7 @@ namespace kbinxmlcs
                 //Array flag is on the second bit
                 var array = (nodeType & 64) > 0;
                 nodeType = (byte)(nodeType & ~64);
+                NodeType propertyType;
 
                 if (Enum.IsDefined(typeof(ControlType), nodeType))
                 {
@@ -96,7 +97,7 @@ namespace kbinxmlcs
                             return _xmlDocument;
                     }
                 }
-                else if (TypeDictionary.TypeMap.TryGetValue(nodeType, out var propertyType))
+                else if (TypeDictionary.TypeMap.TryGetValue(nodeType, out propertyType))
                 {
                     var elementName = _nodeBuffer.ReadString();
                     _currentElement = (XmlElement)_currentElement.AppendChild(_xmlDocument.CreateElement(elementName));
@@ -129,7 +130,7 @@ namespace kbinxmlcs
                         for (var i = 0; i < arraySize / propertyType.Size; i++)
                             result.Add(propertyType.ToString(buffer.Skip(i * propertyType.Size)
                                 .Take(propertyType.Size).ToArray()));
-                        _currentElement.InnerText = string.Join(' ', result);
+                        _currentElement.InnerText = string.Join(" ", result);
                         
                     }
                 }

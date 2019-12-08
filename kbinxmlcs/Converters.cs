@@ -24,14 +24,14 @@ namespace kbinxmlcs
 
         public static string U8ToString(byte[] bytes) => bytes[0].ToString();
         public static string S8ToString(byte[] bytes) => ((sbyte)bytes[0]).ToString();
-        public static string U16ToString(byte[] bytes) => BitConverter.ToUInt16(bytes.Reverse().ToArray()).ToString();
-        public static string S16ToString(byte[] bytes) => BitConverter.ToInt16(bytes.Reverse().ToArray()).ToString();
-        public static string U32ToString(byte[] bytes) => BitConverter.ToUInt32(bytes.Reverse().ToArray()).ToString();
-        public static string S32ToString(byte[] bytes) => BitConverter.ToInt32(bytes.Reverse().ToArray()).ToString();
-        public static string U64ToString(byte[] bytes) => BitConverter.ToUInt64(bytes.Reverse().ToArray()).ToString();
-        public static string S64ToString(byte[] bytes) => BitConverter.ToInt64(bytes.Reverse().ToArray()).ToString();
+        public static string U16ToString(byte[] bytes) => BitConverter.ToUInt16(bytes.Reverse().ToArray(), 0).ToString();
+        public static string S16ToString(byte[] bytes) => BitConverter.ToInt16(bytes.Reverse().ToArray(), 0).ToString();
+        public static string U32ToString(byte[] bytes) => BitConverter.ToUInt32(bytes.Reverse().ToArray(), 0).ToString();
+        public static string S32ToString(byte[] bytes) => BitConverter.ToInt32(bytes.Reverse().ToArray(), 0).ToString();
+        public static string U64ToString(byte[] bytes) => BitConverter.ToUInt64(bytes.Reverse().ToArray(), 0).ToString();
+        public static string S64ToString(byte[] bytes) => BitConverter.ToInt64(bytes.Reverse().ToArray(), 0).ToString();
         public static string Ip4ToString(byte[] buffer) => new IPAddress(buffer).ToString();
-        public static string SingleToString(byte[] buffer) => BitConverter.ToSingle(buffer.Reverse().ToArray()).ToString("0.000000");
-        public static string DoubleToString(byte[] buffer) => BitConverter.ToDouble(buffer.Reverse().ToArray()).ToString("0.000000");
+        public static string SingleToString(byte[] buffer) => BitConverter.ToSingle(buffer.Reverse().ToArray(), 0).ToString("0.000000");
+        public static string DoubleToString(byte[] buffer) => BitConverter.ToDouble(buffer.Reverse().ToArray(), 0).ToString("0.000000");
     }
 }

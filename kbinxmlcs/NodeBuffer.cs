@@ -42,7 +42,7 @@ namespace kbinxmlcs
             if (_compressed)
                 return Sixbit.Decode(ReadBytes((int)Math.Ceiling(length * 6 / 8.0)), length);
             
-            return _encoding.GetString(ReadBytes((length & 0b10111111) + 1));
+            return _encoding.GetString(ReadBytes((length & 0xBF) + 1));
         }
     }
 }
