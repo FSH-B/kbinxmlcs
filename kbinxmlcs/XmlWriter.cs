@@ -119,7 +119,7 @@ namespace kbinxmlcs
                 if (childNode is XmlElement)
                     Recurse((XmlElement)childNode);
             }
-            _nodeBuffer.WriteU8(0xBE);
+            _nodeBuffer.WriteU8(0xFE);
         }
     }
 }
