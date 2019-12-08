@@ -13,12 +13,15 @@ namespace kbinxmlcs
 
         internal DataBuffer(byte[] buffer, Encoding encoding)
         {
+            isRead = true;
+            Buffer_ro = buffer;
             Buffer = buffer.ToList();
             _encoding = encoding;
         }
 
         internal DataBuffer(Encoding encoding)
         {
+            isRead = false;
             _encoding = encoding;
         }
 
@@ -33,7 +36,16 @@ namespace kbinxmlcs
 
         internal byte[] Read32BitAligned(int count)
         {
-            byte[] result = Buffer.Skip(_pos32).Take(count).ToArray();
+            byte[] result;
+            if (isRead)
+            {
+                result = new byte[count];
+                System.Buffer.BlockCopy(Buffer_ro, _pos32, result, 0, count);
+            }
+            else
+            {
+                result = Buffer.Skip(_pos32).Take(count).ToArray();
+            }
             while (count % 4 != 0)
                 count++;
             _pos32 += count;
@@ -48,7 +60,7 @@ namespace kbinxmlcs
             if (_pos16 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = Buffer.Skip(_pos16).Take(2).ToArray();
+            byte[] result = new byte[] { Buffer[_pos16], Buffer[_pos16 + 1] };
             _pos16 += 2;
             Realign16_8();
 
@@ -60,7 +72,7 @@ namespace kbinxmlcs
             if (_pos8 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = Buffer.Skip(_pos8).Take(1).ToArray();
+            byte[] result = new byte[] { Buffer[_pos8] };
             _pos8++;
             Realign16_8();
 

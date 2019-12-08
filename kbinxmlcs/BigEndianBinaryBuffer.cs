@@ -1,27 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace kbinxmlcs
 {
     internal class BigEndianBinaryBuffer
     {
+        protected bool isRead;
         protected List<byte> Buffer;
-        protected int Offset;
+        protected byte[] Buffer_ro;
+        protected int Offset = 0;
 
         internal BigEndianBinaryBuffer(byte[] buffer)
         {
+            isRead = true;
+            Buffer_ro = buffer;
             Buffer = new List<byte>(buffer);
         }
 
         internal BigEndianBinaryBuffer()
         {
+            isRead = false;
             Buffer = new List<byte>();
         }
 
         internal virtual byte[] ReadBytes(int count)
         {
-            byte[] buffer = Buffer.Skip(Offset).Take(count).ToArray();
+            byte[] buffer;
+            if (isRead)
+            {
+                buffer = new byte[count];
+                System.Buffer.BlockCopy(Buffer_ro, Offset, buffer, 0, count);
+            }
+            else
+            {
+                if (count == 1)
+                {
+                    buffer = new byte[] { Buffer[Offset] };
+                }
+                else
+                {
+                    buffer = Buffer.Skip(Offset).Take(count).ToArray();
+                }
+            }
             Offset += count;
 
             return buffer;
@@ -29,6 +51,7 @@ namespace kbinxmlcs
 
         internal virtual void WriteBytes(byte[] buffer)
         {
+            if (isRead) throw new Exception("This binary buffer should only be read");
             Buffer.InsertRange(Offset, buffer);
             Offset += buffer.Length;
         }
