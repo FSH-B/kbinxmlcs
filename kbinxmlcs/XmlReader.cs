@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace kbinxmlcs
 {
@@ -139,5 +140,11 @@ namespace kbinxmlcs
                 }
             }
         }
+
+        /// <summary>
+        /// Reads all nodes in the binary XML.
+        /// </summary>
+        /// <returns>Returns the XML document.</returns>
+        public XDocument ReadLinq() => XDocument.Parse(Read().OuterXml);
     }
 }
