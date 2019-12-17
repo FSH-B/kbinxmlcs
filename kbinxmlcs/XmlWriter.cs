@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace kbinxmlcs
 {
@@ -23,6 +24,21 @@ namespace kbinxmlcs
         public XmlWriter(XmlDocument xmlDocument, Encoding encoding)
         {
             _xmlDocument = xmlDocument;
+            _encoding = encoding;
+
+            _nodeBuffer = new NodeBuffer(true, encoding);
+            _dataBuffer = new DataBuffer(encoding);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlWriter"/> class.
+        /// </summary>
+        /// <param name="xNode">The XML document to be wirtten as a binary XML.</param>
+        /// <param name="encoding">The encoding of the XML document.</param>
+        public XmlWriter(XNode xNode, Encoding encoding)
+        {
+            _xmlDocument = new XmlDocument();
+            _xmlDocument.LoadXml(xNode.ToString());
             _encoding = encoding;
 
             _nodeBuffer = new NodeBuffer(true, encoding);
@@ -119,7 +135,7 @@ namespace kbinxmlcs
                 if (childNode is XmlElement)
                     Recurse((XmlElement)childNode);
             }
-            _nodeBuffer.WriteU8(0xBE);
+            _nodeBuffer.WriteU8(0xFE);
         }
     }
 }
