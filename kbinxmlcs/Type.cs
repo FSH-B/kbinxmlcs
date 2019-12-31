@@ -1,10 +1,5 @@
 ﻿using static kbinxmlcs.Converters;
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-
 namespace kbinxmlcs
 {
     public class NodeType
