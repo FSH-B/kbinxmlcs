@@ -14,7 +14,7 @@ public class Program
     static void Main(string[] args)
     {
         byte[] data = File.ReadAllBytes("test.bin");
-        XmlReader XmlReader = new XmlReader(data);
+        XmlReader xmlReader = new XmlReader(data);
         Console.WriteLine(XmlReader.Read().OuterXml);
     }
 }
