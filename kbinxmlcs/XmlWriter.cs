@@ -10,7 +10,7 @@ namespace kbinxmlcs
     /// </summary>
     public class XmlWriter
     {
-        private readonly XmlDocument _xmlDocument;
+        private readonly XmlDocument _document;
         private readonly Encoding _encoding;
 
         private readonly NodeBuffer _nodeBuffer;
@@ -21,9 +21,9 @@ namespace kbinxmlcs
         /// </summary>
         /// <param name="xmlDocument">The XML document to be wirtten as a binary XML.</param>
         /// <param name="encoding">The encoding of the XML document.</param>
-        public XmlWriter(XmlDocument xmlDocument, Encoding encoding)
+        public XmlWriter(XmlDocument document, Encoding encoding)
         {
-            _xmlDocument = xmlDocument;
+            _document = document;
             _encoding = encoding;
 
             _nodeBuffer = new NodeBuffer(true, encoding);
@@ -35,10 +35,10 @@ namespace kbinxmlcs
         /// </summary>
         /// <param name="xNode">The XML document to be wirtten as a binary XML.</param>
         /// <param name="encoding">The encoding of the XML document.</param>
-        public XmlWriter(XNode xNode, Encoding encoding)
+        public XmlWriter(XNode node, Encoding encoding)
         {
-            _xmlDocument = new XmlDocument();
-            _xmlDocument.LoadXml(xNode.ToString());
+            _document = new XmlDocument();
+            _document.LoadXml(node.ToString());
             _encoding = encoding;
 
             _nodeBuffer = new NodeBuffer(true, encoding);
@@ -51,7 +51,7 @@ namespace kbinxmlcs
         /// <returns>Retruns an array of bytes containing the contents of the binary XML.</returns>
         public byte[] Write()
         {
-            Recurse(_xmlDocument.DocumentElement);
+            Recurse(_document.DocumentElement);
             _nodeBuffer.WriteU8(255);
             _nodeBuffer.Pad();
             _dataBuffer.Pad();
