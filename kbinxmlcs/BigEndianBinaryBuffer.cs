@@ -45,19 +45,18 @@ namespace kbinxmlcs
 
         internal virtual sbyte ReadS8() => (sbyte)ReadBytes(sizeof(byte))[0];
 
-        internal virtual short ReadS16() => BitConverter.ToInt16(ReadBytes(sizeof(short)).Reverse().ToArray());
+        internal virtual short ReadS16() => BitConverter.ToInt16(ReadBytes(sizeof(short)).Reverse().ToArray(), 0);
 
-        internal virtual int ReadS32() => BitConverter.ToInt32(ReadBytes(sizeof(int)).Reverse().ToArray());
 
         internal virtual long ReadS64() => BitConverter.ToInt64(ReadBytes(sizeof(long)).Reverse().ToArray());
 
         internal virtual byte ReadU8() => ReadBytes(sizeof(byte))[0];
 
-        internal virtual ushort ReadU16() => BitConverter.ToUInt16(ReadBytes(sizeof(short)).Reverse().ToArray());
+        internal virtual ushort ReadU16() => BitConverter.ToUInt16(ReadBytes(sizeof(short)).Reverse().ToArray(), 0);
 
-        internal virtual uint ReadU32() => BitConverter.ToUInt32(ReadBytes(sizeof(int)).Reverse().ToArray());
+        internal virtual uint ReadU32() => BitConverter.ToUInt32(ReadBytes(sizeof(int)).Reverse().ToArray(), 0);
 
-        internal virtual ulong ReadU64() => BitConverter.ToUInt64(ReadBytes(sizeof(long)).Reverse().ToArray());
+        internal virtual ulong ReadU64() => BitConverter.ToUInt64(ReadBytes(sizeof(long)).Reverse().ToArray(), 0);
 
         internal void Pad()
         {
