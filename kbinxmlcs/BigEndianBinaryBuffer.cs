@@ -47,8 +47,9 @@ namespace kbinxmlcs
 
         internal virtual short ReadS16() => BitConverter.ToInt16(ReadBytes(sizeof(short)).Reverse().ToArray(), 0);
 
+        internal virtual int ReadS32() => BitConverter.ToInt32(ReadBytes(sizeof(int)).Reverse().ToArray(), 0);
 
-        internal virtual long ReadS64() => BitConverter.ToInt64(ReadBytes(sizeof(long)).Reverse().ToArray());
+        internal virtual long ReadS64() => BitConverter.ToInt64(ReadBytes(sizeof(long)).Reverse().ToArray(), 0);
 
         internal virtual byte ReadU8() => ReadBytes(sizeof(byte))[0];
 
