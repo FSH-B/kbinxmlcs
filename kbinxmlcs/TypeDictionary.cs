@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace kbinxmlcs
 {
-    internal static class TypeDictionary
+    public static class TypeDictionary
     {
         internal static readonly Dictionary<byte, NodeType> TypeMap = new Dictionary<byte, NodeType>()
         {
@@ -65,5 +65,10 @@ namespace kbinxmlcs
         };
 
         internal static readonly Dictionary<string, byte> ReverseTypeMap = TypeMap.ToDictionary(x => x.Value.Name, x => x.Key);
+
+        public static NodeType GetType(string name)
+        {
+            return TypeMap[ReverseTypeMap[name]];
+        }
     }
 }
