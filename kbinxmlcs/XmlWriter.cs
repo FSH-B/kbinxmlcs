@@ -2,6 +2,7 @@
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace kbinxmlcs
 {
@@ -25,6 +26,7 @@ namespace kbinxmlcs
         {
             _document = document;
             _encoding = encoding;
+            AlphabetizeAttributes(_document.DocumentElement);
 
             _nodeBuffer = new NodeBuffer(true, encoding);
             _dataBuffer = new DataBuffer(encoding);
@@ -40,9 +42,11 @@ namespace kbinxmlcs
             _document = new XmlDocument();
             _document.LoadXml(node.ToString());
             _encoding = encoding;
+            AlphabetizeAttributes(_document.DocumentElement);
 
             _nodeBuffer = new NodeBuffer(true, encoding);
             _dataBuffer = new DataBuffer(encoding);
+
         }
 
         /// <summary>
@@ -136,6 +140,23 @@ namespace kbinxmlcs
                     Recurse((XmlElement)childNode);
             }
             _nodeBuffer.WriteU8(0xFE);
+        }
+
+        private void AlphabetizeAttributes(XmlElement element)
+        {
+            var attributes = element.Attributes.Cast<XmlAttribute>()
+                .Where(x => x.Name != "type" && x.Name != "__size" && x.Name != "__count")
+                .OrderBy(x => x.Name);
+            foreach(var attribute in attributes)
+            {
+                element.Attributes.Append(attribute);
+            }
+
+            foreach (XmlNode child in element.ChildNodes)
+            {
+                if (child is XmlElement)
+                    AlphabetizeAttributes((XmlElement)child);
+            }
         }
     }
 }
