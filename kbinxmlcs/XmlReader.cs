@@ -32,7 +32,7 @@ namespace kbinxmlcs
 
             //Verify magic.
             if (signature != 0xA0)
-                throw new KbinException($"Signature was invalid. {signature.ToString("X2")} != 0xA0");
+                throw new KbinException($"Signature was invalid. 0x{signature.ToString("X2")} != 0xA0");
 
             //Encoding flag should be an inverse of the fourth byte.
             if ((byte)~encodingFlag != encodingFlagNot)
