@@ -15,7 +15,8 @@ namespace kbinxmlcs
 
         internal virtual byte[] ReadBytes(int count)
         {
-            byte[] buffer = Buffer.Skip(Offset).Take(count).ToArray();
+            var buffer = new byte[count];
+            Buffer.CopyTo(Offset, buffer, 0, count);
             Offset += count;
 
             return buffer;

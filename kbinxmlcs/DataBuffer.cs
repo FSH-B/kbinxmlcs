@@ -31,9 +31,17 @@ namespace kbinxmlcs
                 _pos16 = _pos32;
         }
 
+        private byte[] ReadBytes(ref int offset, int count)
+        {
+            var buffer = new byte[count];
+            Buffer.CopyTo(offset, buffer, 0, count);
+
+            return buffer;
+        }
+
         internal byte[] Read32BitAligned(int count)
         {
-            byte[] result = Buffer.Skip(_pos32).Take(count).ToArray();
+            var result = ReadBytes(ref _pos32, count);
             while (count % 4 != 0)
                 count++;
             _pos32 += count;
@@ -48,7 +56,7 @@ namespace kbinxmlcs
             if (_pos16 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = Buffer.Skip(_pos16).Take(2).ToArray();
+            var result = ReadBytes(ref _pos16, 2);
             _pos16 += 2;
             Realign16_8();
 
@@ -60,7 +68,7 @@ namespace kbinxmlcs
             if (_pos8 % 4 == 0)
                 _pos32 += 4;
 
-            byte[] result = Buffer.Skip(_pos8).Take(1).ToArray();
+            var result = ReadBytes(ref _pos8, 1);
             _pos8++;
             Realign16_8();
 
