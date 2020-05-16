@@ -145,7 +145,7 @@ namespace kbinxmlcs
         private void AlphabetizeAttributes(XmlElement element)
         {
             var attributes = element.Attributes.Cast<XmlAttribute>()
-                .Where(x => x.Name != "type" && x.Name != "__size" && x.Name != "__count")
+                .Where(x => x.Name != "__type" && x.Name != "__size" && x.Name != "__count")
                 .OrderBy(x => x.Name);
             foreach(var attribute in attributes)
             {
