@@ -26,7 +26,6 @@ namespace kbinxmlcs
         {
             _document = document;
             _encoding = encoding;
-            AlphabetizeAttributes(_document.DocumentElement);
 
             _nodeBuffer = new NodeBuffer(true, encoding);
             _dataBuffer = new DataBuffer(encoding);
@@ -41,9 +40,8 @@ namespace kbinxmlcs
         {
             _document = new XmlDocument();
             _document.LoadXml(node.ToString());
+            
             _encoding = encoding;
-            AlphabetizeAttributes(_document.DocumentElement);
-
             _nodeBuffer = new NodeBuffer(true, encoding);
             _dataBuffer = new DataBuffer(encoding);
 
@@ -122,7 +120,7 @@ namespace kbinxmlcs
                 }
             }
 
-            foreach (XmlAttribute attribute in xmlElement.Attributes)
+            foreach (var attribute in xmlElement.Attributes.Cast<XmlAttribute>().OrderBy(x => x.Name))
             {
                 if (attribute.Name != "__type" &&
                     attribute.Name != "__size" &&
@@ -140,23 +138,6 @@ namespace kbinxmlcs
                     Recurse((XmlElement)childNode);
             }
             _nodeBuffer.WriteU8(0xFE);
-        }
-
-        private void AlphabetizeAttributes(XmlElement element)
-        {
-            var attributes = element.Attributes.Cast<XmlAttribute>()
-                .Where(x => x.Name != "__type" && x.Name != "__size" && x.Name != "__count")
-                .OrderBy(x => x.Name);
-            foreach(var attribute in attributes)
-            {
-                element.Attributes.Append(attribute);
-            }
-
-            foreach (XmlNode child in element.ChildNodes)
-            {
-                if (child is XmlElement)
-                    AlphabetizeAttributes((XmlElement)child);
-            }
         }
     }
 }
