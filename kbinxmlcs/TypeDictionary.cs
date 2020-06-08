@@ -66,6 +66,11 @@ namespace kbinxmlcs
 
         internal static readonly Dictionary<string, byte> ReverseTypeMap = TypeMap.ToDictionary(x => x.Value.Name, x => x.Key);
 
+        /// <summary>
+        /// Get an instance of a <see cref="NodeType"/> from the internal type map.
+        /// </summary>
+        /// <param name="name">The name of the type.</param>
+        /// <returns>The found type.</returns>
         public static NodeType GetType(string name)
         {
             return TypeMap[ReverseTypeMap[name]];
