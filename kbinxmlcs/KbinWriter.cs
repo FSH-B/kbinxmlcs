@@ -9,7 +9,7 @@ namespace kbinxmlcs
     /// <summary>
     /// Represents a writer for Konami's binary XML format.
     /// </summary>
-    public class XmlWriter
+    public class KbinWriter
     {
         private readonly XmlDocument _document;
         private readonly Encoding _encoding;
@@ -22,7 +22,7 @@ namespace kbinxmlcs
         /// </summary>
         /// <param name="xmlDocument">The XML document to be wirtten as a binary XML.</param>
         /// <param name="encoding">The encoding of the XML document.</param>
-        public XmlWriter(XmlDocument document, Encoding encoding)
+        public KbinWriter(XmlDocument document, Encoding encoding)
         {
             _document = document;
             _encoding = encoding;
@@ -36,7 +36,7 @@ namespace kbinxmlcs
         /// </summary>
         /// <param name="xNode">The XML document to be wirtten as a binary XML.</param>
         /// <param name="encoding">The encoding of the XML document.</param>
-        public XmlWriter(XNode node, Encoding encoding)
+        public KbinWriter(XNode node, Encoding encoding)
         {
             _document = new XmlDocument();
             _document.LoadXml(node.ToString());

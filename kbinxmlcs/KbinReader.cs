@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -9,8 +10,10 @@ namespace kbinxmlcs
     /// <summary>
     /// Represents a reader for Konami's binary XML format.
     /// </summary>
-    public class XmlReader
+    public class KbinReader
     {
+        public Encoding Encoding { get; }
+
         private readonly NodeBuffer _nodeBuffer;
         private readonly DataBuffer _dataBuffer;
 
@@ -21,7 +24,7 @@ namespace kbinxmlcs
         /// Initializes a new instance of the <see cref="XmlReader"/> class.
         /// </summary>
         /// <param name="buffer">An array of bytes containing the contents of a binary XML.</param>
-        public XmlReader(byte[] buffer)
+        public KbinReader(byte[] buffer)
         {
             //Read header section.
             var binaryBuffer = new BigEndianBinaryBuffer(buffer);
@@ -39,16 +42,16 @@ namespace kbinxmlcs
                 throw new KbinException($"Third byte was not an inverse of the fourth. {~encodingFlag} != {encodingFlagNot}");
 
             var compressed = compressionFlag == 0x42;
-            var encoding = EncodingDictionary.EncodingMap[encodingFlag];
+            Encoding = EncodingDictionary.EncodingMap[encodingFlag];
 
             //Get buffer lengths and load.
             var nodeLength = binaryBuffer.ReadS32();
-            _nodeBuffer = new NodeBuffer(buffer.Skip(8).Take(nodeLength).ToArray(), compressed, encoding);
+            _nodeBuffer = new NodeBuffer(buffer.Skip(8).Take(nodeLength).ToArray(), compressed, Encoding);
 
             var dataLength = BitConverter.ToInt32(buffer.Skip(nodeLength + 8).Take(4).Reverse().ToArray(), 0);
-            _dataBuffer = new DataBuffer(buffer.Skip(nodeLength + 12).Take(dataLength).ToArray(), encoding);
+            _dataBuffer = new DataBuffer(buffer.Skip(nodeLength + 12).Take(dataLength).ToArray(), Encoding);
 
-            _xmlDocument.InsertBefore(_xmlDocument.CreateXmlDeclaration("1.0", encoding.WebName, null), _xmlDocument.DocumentElement);
+            _xmlDocument.InsertBefore(_xmlDocument.CreateXmlDeclaration("1.0", Encoding.WebName, null), _xmlDocument.DocumentElement);
         }
         
         /// <summary>
